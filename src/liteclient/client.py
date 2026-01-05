@@ -65,6 +65,16 @@ class LiteClient:
     def rpop(self, key):
         return self._send_command("RPOP", key)
 
+    def blpop(self, keys, timeout=0):
+        """
+        Blocking pop. 'keys' can be a single string or a list of keys.
+        'timeout' 0 means block indefinitely.
+        """
+        if isinstance(keys, str):
+            keys = [keys]
+        # Command format: BLPOP key1 key2 ... timeout
+        return self._send_command("BLPOP", *keys, timeout)
+
     def close(self):
         self.socket.close()
 
